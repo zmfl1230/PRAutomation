@@ -11,7 +11,7 @@ if [[ "$1" =~ ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
   echo ".repository.full_name"
   echo ".repository.default_branch"
   
-  COMMIT_MESSAGE="$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)"
+  COMMIT_MESSAGE=$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)
   REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
   DEFAULT_BRANCH=$(jq -r ".repository.default_branch" "$GITHUB_EVENT_PATH")
 
