@@ -6,8 +6,8 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
   exit 1
 fi
 
-if [[ "${{ commit_message }}" == ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
-  COMMIT_MESSAGE='$(jq -r "commit_message" "$GITHUB_EVENT_PATH" | head -1)'
+if [[ "$1" == ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
+  COMMIT_MESSAGE='$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)'
   REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
   DEFAULT_BRANCH=$(jq -r ".repository.default_branch" "$GITHUB_EVENT_PATH")
 
