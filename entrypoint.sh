@@ -7,12 +7,18 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
 fi
 
 if [[ "$1" =~ ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
-  COMMIT_MESSAGE='$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)'
+  echo "$GITHUB_EVENT_PATH"
+  echo ".repository.full_name"
+  echo ".repository.default_branch"
+  
+  COMMIT_MESSAGE="$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)"
   REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
   DEFAULT_BRANCH=$(jq -r ".repository.default_branch" "$GITHUB_EVENT_PATH")
 
   echo "~~~~ Data ~~~~"
   echo "
+  $REPO_FULLNAME
+  $DEFAULT_BRANCH
   title : $COMMIT_MESSAGE
   ref   : $GITHUB_REF
   "
@@ -23,5 +29,7 @@ if [[ "$1" =~ ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/$REPO_FULLNAME/pulls")
+  echo "~~~~ Response ~~~~"
+  echo "Code : $RESPONSE_CODE"
 
 fi
