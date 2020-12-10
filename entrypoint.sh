@@ -5,8 +5,8 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "Undefined GITHUB_TOKEN environment variable."
   exit 1
 fi
-echo "$1"
-if [[ "$1" == ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
+
+if [[ "$1" =~ ^[a-z]{1,10}-pr:[[:space:]].+ ]]; then
   COMMIT_MESSAGE='$(jq -r "$1" "$GITHUB_EVENT_PATH" | head -1)'
   REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
   DEFAULT_BRANCH=$(jq -r ".repository.default_branch" "$GITHUB_EVENT_PATH")
